@@ -1,5 +1,5 @@
 <template>
-  <div style="min-height: 500px; color: black" ref="gantt"></div>
+  <div style="min-height: 300px; color: black" ref="gantt"></div>
 </template>
 
 <script>
@@ -13,9 +13,6 @@ export default {
         const gantt = module.default || module;
 
         // Header calendar
-        gantt.locale.date.month_full = [
-          "1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"
-        ];
         gantt.locale.date.month_short = [
           "1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"
         ];
@@ -41,12 +38,12 @@ export default {
 
         gantt.config.drag_links = false;
 
-        gantt.config.editable = false;
+        gantt.config.editable = true;
 
         // Data column left
         gantt.config.columns = [
-          { name: "id", label: "ID", width: 50, align: "center" },
-          { name: "text", label: "text", width: 100, tree: true },
+          { name: "id", label: "ID", width: 30, align: "center" },
+          { name: "text", label: "text", width: 100, tree: true },//folder
           { name: "start_date", label: "start_date", width: 90, align: "center", resize: true },
           { name: "end_date", label: "end_date", width: 90, align: "center", resize: true },
           { name: "duration", label: "duration", width: 50, align: "center" },
@@ -55,6 +52,13 @@ export default {
         ];
 
         gantt.init(this.$refs.gantt);
+
+        gantt.templates.task_class = function (start, end, task) {
+          if (task.id === 2) {
+            return "task-color-2";
+          }
+          return "";
+        };
 
         const tasks = {
           data: [
@@ -103,7 +107,7 @@ div[ref="gantt"] {
 }
 
 .gantt_task_line {
-  background-color: gray;
+  background-color: #45AD51;
 }
 
 .gantt_task_progress {
@@ -124,8 +128,8 @@ div[ref="gantt"] {
 
 /* Header left */
 .gantt_grid_head_cell, .gantt_grid_scale_cell {
-  background-color: orange;
-  color: white !important;
+  color: black !important;
+  font-weight: 600;
 }
 
 /* header calendar */
@@ -137,4 +141,13 @@ div[ref="gantt"] {
 .gantt_scale_row {
   background-color: #f0f0f0 !important;
 }
+
+.task-color-2 {
+  background-color: #3DBAD2;
+}
+
+.task-color-2 .gantt_task_progress {
+  background-color: #2A9CB5;
+}
+
 </style>
