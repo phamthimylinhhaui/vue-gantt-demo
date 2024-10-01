@@ -1,5 +1,5 @@
 <template>
-  <div style="min-height: 300px; color: black" ref="gantt"></div>
+  <div style="min-height: 300px; color: black; display: block" ref="gantt"></div>
 </template>
 
 <script>
@@ -43,12 +43,12 @@ export default {
         // Data column left
         gantt.config.columns = [
           { name: "id", label: "ID", width: 30, align: "center" },
-          { name: "text", label: "text", width: 100, tree: true },//folder
+          { name: "text", label: "text", width: 100, tree: true},//folder
           { name: "start_date", label: "start_date", width: 90, align: "center", resize: true },
           { name: "end_date", label: "end_date", width: 90, align: "center", resize: true },
-          { name: "duration", label: "duration", width: 50, align: "center" },
+          // { name: "duration", label: "duration", width: 50, align: "center" },
           { name: "progress", label: "progress", width: 80, align: "center", template: gantt.config.progress }, // Thanh tiến trình
-          { name: "add", width: 40 }
+          // { name: "add", width: 40 }
         ];
 
         gantt.init(this.$refs.gantt);
