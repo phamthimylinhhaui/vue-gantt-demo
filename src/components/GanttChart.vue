@@ -1,5 +1,5 @@
 <template>
-  <div style="min-height: 300px; color: black" ref="gantt"></div>
+  <div style="min-height: 300px; color: black; display: block" ref="gantt"></div>
 </template>
 
 <script>
@@ -12,7 +12,7 @@ export default {
       import("dhtmlx-gantt").then((module) => {
         const gantt = module.default || module;
 
-        // Header calendar
+        // Cấu hình ngôn ngữ và lịch
         gantt.locale.date.month_short = [
           "1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"
         ];
@@ -20,46 +20,38 @@ export default {
           "日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日"
         ];
         gantt.locale.date.day_short = ["日", "月", "火", "水", "木", "金", "土"];
-        gantt.config.scales = [//format
+        gantt.config.scales = [
           { unit: "month", step: 1, format: "%Y年 %M" },
-          { unit: "day", step: 1, format: "%m/%d (%D)" },
-          // { unit: "day", step: 1, format: "%D" },
+          { unit: "day", step: 1, format: "%m/%d (%D)" }
         ];
 
-
-        // Config common
+        // Cấu hình chung
         gantt.config.date_format = "%Y-%m-%d";
-
         gantt.config.drag_progress = true;
-
-        gantt.config.drag_task = false;
-        gantt.config.drag_resize = false;
-        gantt.config.drag_move = false;
-
-        gantt.config.drag_links = false;
-
+        gantt.config.drag_task = true;
+        gantt.config.drag_resize = true;
+        gantt.config.drag_move = true;
+        gantt.config.drag_links = true;
         gantt.config.editable = true;
 
-        // Data column left
+        // Cột dữ liệu bên trái
         gantt.config.columns = [
           { name: "id", label: "ID", width: 30, align: "center" },
-          { name: "text", label: "text", width: 100, tree: true },//folder
+          { name: "text", label: "text", width: 100, tree: true },
           { name: "start_date", label: "start_date", width: 90, align: "center", resize: true },
           { name: "end_date", label: "end_date", width: 90, align: "center", resize: true },
-          { name: "duration", label: "duration", width: 50, align: "center" },
-          { name: "progress", label: "progress", width: 80, align: "center", template: gantt.config.progress }, // Thanh tiến trình
-          { name: "add", width: 40 }
+          { name: "progress", label: "progress", width: 80, align: "center", template: gantt.config.progress }
         ];
 
-        gantt.init(this.$refs.gantt);
-
+        // Sử dụng hàm task_class để điều chỉnh màu sắc task
         gantt.templates.task_class = function (start, end, task) {
-          if (task.id === 2) {
-            return "task-color-2";
+          if (task.id === 1) {
+            return "custom-task-progress";
           }
           return "";
         };
 
+        // Khởi tạo dữ liệu
         const tasks = {
           data: [
             {
@@ -70,19 +62,18 @@ export default {
             },
             {
               id: 3, text: "UAT", start_date: "2024-09-10", duration: 5, progress: 0.3,
+            },
+            // Nhiệm vụ con biểu thị progress của DEV
+            {
+              id: 4, text: "Progress DEV", parent: 1, start_date: "2024-09-02", duration: 6,
+              progress: 1, type: "task",
+              readonly: true // Không cho phép kéo, chỉnh sửa
             }
-          ],
-          // links: [
-          //   { id: 1, source: 1, target: 2, type: "0" },
-          //   { id: 2, source: 2, target: 3, type: "0" }
-          // ]
+          ]
         };
 
+        gantt.init(this.$refs.gantt);
         gantt.parse(tasks);
-
-        // gantt.attachEvent("onTaskCreated", function() {
-        // //
-        // });
 
       }).catch(error => {
         console.error("Error loading dhtmlx-gantt:", error);
@@ -106,6 +97,13 @@ div[ref="gantt"] {
   height: 500px;
 }
 
+/* Tùy chỉnh lớp progress của task */
+.custom-task-progress .gantt_task_progress {
+  background-color: green;
+  width: 60%; /* Điều chỉnh theo tỉ lệ % bạn muốn */
+}
+
+/* Các tùy chỉnh khác */
 .gantt_task_line {
   background-color: #45AD51;
 }
@@ -114,30 +112,27 @@ div[ref="gantt"] {
   background-color: green;
 }
 
-/* Text */
 .gantt_grid_head_cell, .gantt_grid_data {
   font-size: 12px;
   text-align: center;
 }
 
-/* Date */
 .gantt_task_date {
   color: black !important;
   font-weight: 600;
 }
 
-/* Header left */
 .gantt_grid_head_cell, .gantt_grid_scale_cell {
   color: black !important;
   font-weight: 600;
 }
 
-/* header calendar */
 .gantt_scale_cell {
   color: white !important;
   font-weight: bold;
   background-color: #3672A9;
 }
+
 .gantt_scale_row {
   background-color: #f0f0f0 !important;
 }
@@ -149,5 +144,4 @@ div[ref="gantt"] {
 .task-color-2 .gantt_task_progress {
   background-color: #2A9CB5;
 }
-
 </style>
