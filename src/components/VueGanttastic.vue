@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="table-container" style="padding-top: 37px; width: 450px">
+  <div class="main-container">
+    <div class="table-container" style="width: 450px">
       <table class="resource-table">
         <thead>
         <tr class="resource-table-th">
@@ -30,23 +30,26 @@
       </table>
     </div>
 
-    <div class="gantt-container">
-      <g-gantt-chart
-          chart-start="2024-09-01 08:00"
-          chart-end="2024-10-30 17:00"
-          precision="day"
-          bar-start="myBeginDate"
-          bar-end="myEndDate"
-      >
-        <g-gantt-row label="Development" :bars="devBarList" />
-        <g-gantt-row label="Testing" :bars="testBarList" />
-      </g-gantt-chart>
+    <div>
+      <div class="gantt-container">
+        <g-gantt-chart
+            chart-start="2024-09-01 08:00"
+            chart-end="2024-10-30 17:00"
+            precision="day"
+            bar-start="myBeginDate"
+            bar-end="myEndDate"
+            grid
+        >
+          <g-gantt-row label="Development" :bars="devBarList"/>
+          <g-gantt-row label="Testing" :bars="testBarList"/>
+        </g-gantt-chart>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import {ref} from "vue";
 
 // Dữ liệu cho "Development"
 const devs = [
@@ -54,8 +57,8 @@ const devs = [
     myBeginDate: "2024-09-05 08:00",
     myEndDate: "2024-09-10 17:00",
     ganttBarConfig: {
-      id: "dev-1",
-      label: "Frontend Development",
+      id: "1",
+      label: "Estimate Development",
       style: {
         backgroundColor: "#4CAF50",
         borderRadius: "4px",
@@ -64,11 +67,11 @@ const devs = [
     },
   },
   {
-    myBeginDate: "2024-09-11 08:00",
+    myBeginDate: "2024-09-09 08:00",
     myEndDate: "2024-09-15 17:00",
     ganttBarConfig: {
-      id: "dev-2",
-      label: "Backend Development",
+      id: "2",
+      label: "Development",
       style: {
         backgroundColor: "#2196F3",
         borderRadius: "4px",
@@ -84,8 +87,8 @@ const tests = [
     myBeginDate: "2024-09-16 08:00",
     myEndDate: "2024-09-20 17:00",
     ganttBarConfig: {
-      id: "test-1",
-      label: "Unit Testing",
+      id: "1",
+      label: "Estimate Testing",
       style: {
         backgroundColor: "#FF9800",
         borderRadius: "4px",
@@ -94,11 +97,11 @@ const tests = [
     },
   },
   {
-    myBeginDate: "2024-09-21 08:00",
+    myBeginDate: "2024-09-20 08:00",
     myEndDate: "2024-09-25 17:00",
     ganttBarConfig: {
-      id: "test-2",
-      label: "Integration Testing",
+      id: "2",
+      label: "Testing",
       style: {
         backgroundColor: "#F44336",
         borderRadius: "4px",
@@ -114,14 +117,16 @@ const testBarList = ref(tests);
 </script>
 
 <style scoped>
-.table-container {
+.main-container {
   position: relative;
 }
 
-.resource-table {
+.table-container {
   position: fixed;
   left: 0;
-  width: 450px;
+  width: 440px;
+  z-index: 99999;
+  background-color: #fff;
 }
 
 .resource-table tr {
@@ -135,7 +140,7 @@ const testBarList = ref(tests);
   background-color: #f4f4f4;
   text-align: left;
   font-weight: bold;
-  height: 80px !important;
+  height: 77px !important;
 }
 
 .resource-table tbody tr:nth-child(even) {
@@ -144,11 +149,10 @@ const testBarList = ref(tests);
 
 /* Container của Gantt chart */
 .gantt-container {
-  margin-left: 450px;
+  margin-left: 445px;
   overflow: hidden;
-  overflow-x: auto !important; /* Cho phép cuộn ngang */
-  //white-space: nowrap!important; /* Đảm bảo nội dung không xuống dòng */
-  //display: block !important; /* Đảm bảo nội dung không bị bó hẹp */
+  overflow-x: auto !important;
+  width: 100%;
 }
 
 .gantt-container div {
@@ -156,9 +160,4 @@ const testBarList = ref(tests);
   overflow-x: auto !important;
 }
 
-/* Đảm bảo biểu đồ chiếm toàn bộ chiều ngang */
-.g-gantt-chart {
-  min-width: 1000px!important; /* Đặt chiều rộng tối thiểu để có thể cuộn */
-  //display: inline-block;
-}
 </style>
