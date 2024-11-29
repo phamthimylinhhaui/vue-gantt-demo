@@ -1,14 +1,14 @@
 <template>
-  <GanttChart/>
+  <VueGanttastic/>
 </template>
 
 <script>
-import GanttChart from './components/GanttChart.vue'
+import VueGanttastic from './components/VueGanttastic.vue'
 
 export default {
   name: 'App',
   components: {
-    GanttChart,
+    VueGanttastic,
   }
 }
 </script>
